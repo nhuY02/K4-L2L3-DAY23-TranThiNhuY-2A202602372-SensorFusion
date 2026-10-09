@@ -6,8 +6,8 @@
 
 - Họ tên: Trần Thị Như Ý
 - MSSV: 2A202602372
-- Email: y.2a202602372@vinuni.edu.vn
-- Link repo (fork): https://github.com/NhuY-2A202602372/K4-L2L3-DAY23-TranThiNhuY-2A202602372-SensorFusion
+- Email: 26ai.yttn@vinuni.edu.vn
+- Link repo (fork): https://github.com/nhuY02/K4-L2L3-DAY23-TranThiNhuY-2A202602372-SensorFusion.git
 - Commit hash nộp (`git rev-parse HEAD`): f9146840f58f67c2059607504e38b3c5445e32b8
 
 ## Tóm tắt kết quả
