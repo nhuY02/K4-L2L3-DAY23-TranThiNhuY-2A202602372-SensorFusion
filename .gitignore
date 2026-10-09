@@ -25,3 +25,10 @@ data/**
 # Graded run outputs must be committed.
 !student/artifacts/metrics*.json
 !student/artifacts/grade_run*.log
+
+# Data files - never commit
+*.zip
+*.tfrecord
+Waymo-*/
+weights-*/
+

@@ -1,0 +1,44 @@
+[
+  {
+    "offset_m": 0.0,
+    "rmse": 0.4122846930350814,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  },
+  {
+    "offset_m": 0.1,
+    "rmse": 0.3855418495018776,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  },
+  {
+    "offset_m": 0.3,
+    "rmse": 0.3893410886207514,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  },
+  {
+    "offset_m": 0.5,
+    "rmse": 0.39535623102654216,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  },
+  {
+    "offset_m": 1.0,
+    "rmse": 0.4062911055231819,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  },
+  {
+    "offset_m": 2.0,
+    "rmse": 0.39121501605101955,
+    "matches": 235,
+    "ghosts": 0,
+    "gating_rejects": null
+  }
+]

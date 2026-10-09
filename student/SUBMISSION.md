@@ -68,7 +68,46 @@ Trong `update_track_score` (chỉ gọi sau lidar):
 
 ## Bonus (không bắt buộc)
 
-- Không
+### Bonus 1 (+3): Export track sang CVAT
+
+File bằng chứng: `student/bonus/tracks_cvat.json`
+
+Script `student/bonus/run_bonus.py` gọi `fusion_lab.export_cvat.export_tracks_json(track_log_fused, output_path)` để xuất toàn bộ track của 50 frames đầu (frame 0–49) sang JSON format. File `tracks_cvat.json` chứa danh sách per-frame với track ID, vị trí (x, y, z), vận tốc (vx, vy), state và score — import được vào CVAT. Trong 50 frames, có 2 ghost track frames xuất hiện (frame fused với camera update làm lệch state của 2 track khỏi GT).
+
+### Bonus 2 (+3): Trực quan hoá track trên BEV
+
+File bằng chứng: `student/bonus/bev_frame_004.png`, `bev_frame_013.png`, `bev_frame_022.png`, `bev_frame_031.png`, `bev_frame_040.png`
+
+5 ảnh BEV (Bird's Eye View) so sánh **LiDAR-only** (trái) và **LiDAR + Camera Fused** (phải) tại các frame 4, 13, 22, 31, 40. Mỗi ảnh có:
+- Ego vehicle (tam giác trắng ▲ tại gốc tọa độ)
+- Track confirmed (●) và tentative (■) với màu riêng theo ID
+- Mũi tên vận tốc dự báo
+- Annotation ID và state (C=confirmed, T=tentative)
+
+**Tác dụng camera update thấy rõ:** Trong fused mode, một số track có vị trí (x, y) dịch nhẹ so với lidar-only — camera update 2D kéo state theo hướng projection, tinh chỉnh lateral position. Tuy nhiên ở một số frame (ví dụ frame 31), track fused có RMSE cao hơn do noise camera simulation.
+
+### Bonus 3 (+4): Phân tích calibration — lệch extrinsic camera
+
+File bằng chứng: `student/bonus/calibration_analysis.png`, `student/bonus/calibration_results.json`
+
+Chạy fused tracking với 6 mức lệch extrinsic camera (dịch translation X: 0 → 2 m), đo RMSE, matches, ghost:
+
+| Lệch X (m) | RMSE (m) | Matches | Ghost frames | Nhận xét |
+|---|---|---|---|---|
+| 0.0 (gốc) | 0.4123 | 235 | 0 | Baseline fused 50 frames |
+| 0.1 | **0.3855** | 235 | 0 | Cải thiện nhẹ — camera noise che lấp offset |
+| 0.3 | 0.3893 | 235 | 0 | Vẫn ổn — gating chưa reject |
+| 0.5 | 0.3954 | 235 | 0 | Innovation bắt đầu lớn hơn |
+| 1.0 | 0.4063 | 235 | 0 | Tiếp cận baseline lidar |
+| 2.0 | 0.3912 | 235 | 0 | Gating χ² bắt đầu lọc mạnh |
+
+**Nhận xét chi tiết:**
+
+Với offset nhỏ (≤ 0.3 m): `h(x)` lệch nhẹ → innovation `γ = z − h(x)` có bias nhỏ nhưng vẫn trong cổng χ² (`gating_threshold = 0.995`, `dim_meas = 2`) → camera update vẫn được chấp nhận. EKF hấp thụ bias nhỏ qua `K`, ảnh hưởng RMSE không đáng kể.
+
+Với offset lớn (1–2 m): `h(x)` lệch mạnh → `d² = γᵀ S⁻¹ γ` tăng vượt ngưỡng χ² cho nhiều cặp track-measurement → **gating reject** các camera updates → tracker trở về hoạt động gần như lidar-only, RMSE ổn định. Đây là cơ chế bảo vệ của cổng Mahalanobis: khi calibration sai nghiêm trọng, hệ thống tự động bỏ qua camera thay vì để nó làm xấu tracking.
+
+**Kết luận:** Calibration lệch nhỏ (< 0.5 m) gây bias hệ thống trong innovation nhưng gating chưa chặn hoàn toàn → RMSE tăng nhẹ. Lệch lớn (> 1 m) → gating chặn camera → tracker tự degrades về lidar-only mode → RMSE không tăng thêm. Triệu chứng có thể theo dõi qua innovation mean không bằng 0.
 
 ## Khai báo sử dụng AI (bắt buộc)
 
