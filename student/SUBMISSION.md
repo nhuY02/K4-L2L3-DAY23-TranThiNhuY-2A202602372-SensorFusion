@@ -8,7 +8,7 @@
 - MSSV: 2A202602372
 - Email: 26ai.yttn@vinuni.edu.vn
 - Link repo (fork): https://github.com/nhuY02/K4-L2L3-DAY23-TranThiNhuY-2A202602372-SensorFusion.git
-- Commit hash nộp (`git rev-parse HEAD`): f9146840f58f67c2059607504e38b3c5445e32b8
+- Commit hash nộp (`git rev-parse HEAD`): 97b5a41a954a28ede1a426b149e4c739fa7a90d8
 
 ## Tóm tắt kết quả
 
